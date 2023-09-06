@@ -3,10 +3,10 @@
 # Error codes are defined here for ease of use
 readonly CMD_ARG_ERR=1
 readonly BAD_INSTALL_DIR=2
+readonly MISSING_INSTALL_REQUIREMENT=3
 
 # Print usage of program
-function print_usage()
-{
+function print_usage {
 	echo "Usage:"
 	echo "..........install directory - directory where you would like to install bashrc"
 }
@@ -21,6 +21,14 @@ function yes_or_no {
     done
 }
 
+function preinstall_check {
+    # check dos2unix exist
+    if [ ! $(command dos2unix 1>/dev/null 2>&1) ]; then
+        echo "dos2unix is not installed"
+        exit $MISSING_INSTALL_REQUIREMENT
+    fi
+}
+
 ##### Script entry point of execution
 ### Parse command line arguments
 # Check number of arguments
@@ -28,6 +36,9 @@ if [ "$#" -ne 1 ]; then
 	print_usage
 	exit $CMD_ARG_ERR
 fi
+
+# Check prerequisites
+preinstall_check
 
 readonly BASHRC_INSTALL_DIR_ARG=$1
 
