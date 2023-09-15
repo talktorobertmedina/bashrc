@@ -11,6 +11,8 @@ function print_usage {
 	echo "..........install directory - directory where you would like to install bashrc"
 }
 
+# Generic user input prompt
+# Returns true if the user accepts and false if the user denies
 function yes_or_no {
     while true; do
         read -p "$* [y/n]: " yn
@@ -21,12 +23,23 @@ function yes_or_no {
     done
 }
 
+# Check if a command exist
+# Arguments: $1 is the command
+# Returns true if it does exist and false if it does not.
+function command_exist {
+    return $(hash "$1" >/dev/null 2>&1)
+}
+
+# Checks installation requirements before executing a script
 function preinstall_check {
+    echo "Checking prerequisites for installation..."
     # check dos2unix exist
-    if [ ! $(command dos2unix 1>/dev/null 2>&1) ]; then
-        echo "dos2unix is not installed"
-        exit $MISSING_INSTALL_REQUIREMENT
+    if [ ! $(command_exist dos2unix) ]; then
+        echo "dos2unix is not installed";
+        echo "Aborted";
+        exit "$BAD_INSTALL_DIR";
     fi
+    echo "Finished"
 }
 
 ##### Script entry point of execution
@@ -41,27 +54,28 @@ fi
 preinstall_check
 
 readonly BASHRC_INSTALL_DIR_ARG=$1
+echo "Installation set to $1"
 
 # Directory must exist
-if [ ! -d $BASHRC_INSTALL_DIR_ARG ]; then
+if [ ! -d "$BASHRC_INSTALL_DIR_ARG" ]; then
 	echo "$BASHRC_INSTALL_DIR_ARG is not a directory"
 	exit $BAD_INSTALL_DIR
 fi
 
-if [ -f $BASHRC_INSTALL_DIR_ARG/.bashrc.bak ]; then
+if [ -f "$BASHRC_INSTALL_DIR_ARG"/.bashrc.bak ]; then
 	yes_or_no "This will override $BASHRC_INSTALL_DIR_ARG/.bashrc.bak. Continue?(Y/N): " || exit 0
 fi
 
 # Rename bashrc file if it exists
-if [ -f $BASHRC_INSTALL_DIR_ARG/.bashrc ]; then
+if [ -f "$BASHRC_INSTALL_DIR_ARG"/.bashrc ]; then
 	mv -v $BASHRC_INSTALL_DIR_ARG/.bashrc $BASHRC_INSTALL_DIR_ARG/.bashrc.bak
 fi
 
 # Copy over the bashrc from this project
-cp -v bashrc $BASHRC_INSTALL_DIR_ARG/.bashrc
+cp -v bashrc "$BASHRC_INSTALL_DIR_ARG"/.bashrc
 SRC_ABS_PATH=$(pwd)
 sed -i "1i BASHRC_SRC_DIR=\"$SRC_ABS_PATH\"" $BASHRC_INSTALL_DIR_ARG/.bashrc
 INSTALL_ABS_PATH=$(realpath $BASHRC_INSTALL_DIR_ARG)
 sed -i "2i BASHRC_INSTALL_DIR=\"$INSTALL_ABS_PATH\"" $BASHRC_INSTALL_DIR_ARG/.bashrc
-dos2unix $BASHRC_INSTALL_DIR_ARG/.bashrc
+dos2unix "$BASHRC_INSTALL_DIR_ARG"/.bashrc
 echo "Run \"source $BASHRC_INSTALL_DIR_ARG/.bashrc\" to use it."
