@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# TODO: need to add a command line argument parser
+# It needs to check for verbose flags
+# The reason why I want this is so each function can check if the verbose flag exists and then print to console appropriately
+
+
 # Error codes are defined here for ease of use
 readonly CMD_ARG_ERR=1
 readonly BAD_INSTALL_DIR=2
@@ -34,7 +39,7 @@ function command_exist {
 function preinstall_check {
     echo "Checking prerequisites for installation..."
     # check dos2unix exist
-    if [ ! $(command_exist dos2unix) ]; then
+    if ! command_exist dos2unix; then
         echo "dos2unix is not installed";
         echo "Aborted";
         exit "$BAD_INSTALL_DIR";

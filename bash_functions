@@ -1,3 +1,7 @@
+cdup() {
+    cd $(printf "%0.s../" $(seq 1 $1 ));
+}
+
 # # Use the best version of pico installed
 # edit ()
 # {

@@ -1,18 +1,15 @@
-# alias brc='source "$BASHRC_INSTALL_DIR"/.bashrc'
-# alias ebrc='edit "$BASHRC_INSTALL_DIR"/.bashrc'
+### Bashrc
+alias brc='source "$BASHRC_INSTALL_DIR"/.bashrc'
 
-# # Change directory aliases
-# alias home='cd ~'
-# alias cd..='cd ..'
-# alias ..='cd ..'
-# alias ...='cd ../..'
-# alias ....='cd ../../..'
-# alias .....='cd ../../../..'
+# Filesystem
+alias untar='tar -xvf'
 
-# # cd into the old directory
-# alias bd='cd "$OLDPWD"'
+### Directory navigation
+alias home='cd ~'
+alias cd..='cdup'
+alias bd='cd "$OLDPWD"' #also 'cd -'' can be used
 
-# # Alias's for multiple directory listing commands
+### Filesystem listing commands
 # alias la='ls -Alh' # show hidden files
 # alias ls='ls -aFh --color=always' # add colors and file type extensions
 # alias lx='ls -lXBh' # sort by extension
@@ -23,7 +20,7 @@
 # alias lt='ls -ltrh' # sort by date
 # alias lm='ls -alh |more' # pipe through 'more'
 # alias lw='ls -xAh' # wide listing format
-# alias ll='ls -Fls' # long listing format
+alias ll='ls -Fls' # long listing format
 # alias labc='ls -lap' #alphabetical sort
 # alias lf="ls -l | egrep -v '^d'" # files only
 # alias ldir="ls -l | egrep '^d'" # directories only
@@ -43,8 +40,8 @@
 # alias p="ps aux | grep "
 # alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
 
-# # Search files in the current folder
-# alias f="find . | grep "
+### Search commands for filesystem
+alias f="find . | grep "
 
 # # Count all files (recursively) in the current folder
 # alias countfiles="for t in files links directories; do echo \`find . -type \${t:0:1} | wc -l\` \$t; done 2> /dev/null"

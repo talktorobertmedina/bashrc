@@ -1,0 +1,5 @@
+# User-defined directories
+export GIT_HOME=$HOME/Software_Projects
+
+# Navigation aliases to popular directories
+export GO_GIT_HOME=$GIT_HOME
