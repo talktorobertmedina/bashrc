@@ -80,3 +80,6 @@ alias f="find . | grep "
 
 # # SHA1
 # alias sha1='openssl sha1'
+
+# Admin aliases
+print-install-history="grep ' install ' /var/log/dpkg.log"
